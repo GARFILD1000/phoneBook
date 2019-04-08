@@ -35,7 +35,7 @@
 
                             <div class="form-group">
                                 <div class="col-md-8">
-                                    <input class="form-control" ng-model="newPerson.INN" placeholder = "ИНН" />
+                                    <input class="form-control" ng-model="newPerson.inn" placeholder = "ИНН" />
                                 </div>
                             </div>
                             <div class="form-group">
@@ -81,7 +81,7 @@
                                     <td>{{ item.fio }}</td>
                                     <td>{{ item.phone }}</td>
                                     <td>{{ item.address }}</td>
-                                    <td>{{ item.INN }}</td>
+                                    <td>{{ item.inn }}</td>
                                     <td> <i class="far fa-edit" hover-class="fas" ng-click="editPerson(item)" ></i> </td>
                                     <td> <i class="far fa-trash-alt" hover-class="fas" ng-click="deletePerson(item.id)"></i></td>
                                 </tr>

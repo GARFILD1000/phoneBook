@@ -25,12 +25,14 @@ repositories {
 dependencies {
 	compile("org.springframework.boot:spring-boot-starter-web")
 	//compile("org.springframework.boot:spring-boot-starter-data-jpa")
-	compile("org.springframework.boot:spring-boot-starter-security")
+	//compile("org.springframework.boot:spring-boot-starter-security")
 	compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+	compile ("org.junit:junit:4.12")
+	compile files("libs/mysql-connector-java-8.0.13.jar")
 	//compile 'mysql:mysql-connector-java:5.1.31'
 	//compile 'commons-dbcp:commons-dbcp:1.4'
 	//testCompile("org.springframework:spring-test")
-	//testCompile("junit:junit")
+	testCompile("junit:junit")
 	//testCompile 'org.springframework.security:spring-security-test:4.0.1.RELEASE'
 	
 	//implementation 'org.springframework.boot:spring-boot-starter-web'

@@ -26,12 +26,16 @@ class DatabaseSQL{
         con = null;
         st = null;
     }
+
+    public void initTable(String tableName, String fields){
+        executeUpdate("CREATE TABLE IF NOT EXISTS " + tableName + "(" + fields + ");");
+    }
     
-    public ArrayList<String> executeQuery(String query, ArrayList<String> fields){ 
+    public ArrayList<String> executeQuery(String query){
         this.connected = false;
         String URL = driverName + "://" + hostName + ":" + portNumber + "/" + databaseName;  
-        ArrayList<String> result = new ArrayList<String>();
-        StringBuilder queryResult = new StringBuilder();
+        ArrayList<String> result = new ArrayList<>();
+        StringBuilder queryResult;
         try{
             con = DriverManager.getConnection(URL, usr, psw);
             st = con.createStatement();
@@ -39,42 +43,24 @@ class DatabaseSQL{
                 this.connected = true;
             }
             rs = st.executeQuery(query);
-            int counter = 0;
+            ResultSetMetaData metaData = rs.getMetaData();
             while(rs.next()){
                 queryResult = new StringBuilder();
-                for (int i = 0; i < fields.size(); i++){
-                    queryResult.append(rs.getString(fields.get(i)));
-                    if (i < fields.size()-1){
+                for (int i = 1; i <= metaData.getColumnCount(); i++){
+                    queryResult.append(rs.getString(i));
+                    if (i < metaData.getColumnCount()){
                         queryResult.append(";");
                     }
                 }
                 result.add(queryResult.toString());
-                counter++;
             }
         }
         catch(SQLException e){
            e.printStackTrace();
         }
         finally {
-            try { 
-                con.close(); 
-            } 
-            catch(SQLException e) {
-                e.printStackTrace();
-            }
-            try {
-                st.close(); 
-            } 
-            catch(SQLException e) { 
-                e.printStackTrace();
-            }
-            try { 
-                rs.close(); 
-            } 
-            catch(SQLException e) { 
-                e.printStackTrace();
-            }
-            
+            closeConnections();
+            this.connected = false;
         }
         return result;
     }
@@ -96,21 +82,37 @@ class DatabaseSQL{
            e.printStackTrace();
         }
         finally {
-            try { 
-                con.close(); 
-            } 
-            catch(SQLException e) {
-                e.printStackTrace();
-            }
-            try {
-                st.close(); 
-            } 
-            catch(SQLException e) { 
-                e.printStackTrace();
-            }
+            closeConnections();
+            this.connected = false;
         }
     }
-    
+
+    private void closeConnections(){
+        try {
+            if (con != null) {
+                con.close();
+            }
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (st != null) {
+                st.close();
+            }
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (rs != null){
+                rs.close();
+            }
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
